@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ListErrors extends React.Component {
   render() {
@@ -17,10 +18,11 @@ class ListErrors extends React.Component {
           }
         </ul>
       );
-    } else {
-      return null;
     }
+    return null;
   }
 }
-
+ListErrors.propTypes = {
+  errors: PropTypes.any
+};
 export default ListErrors;

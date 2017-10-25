@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import agent from '../agent';
-import { connect } from 'react-redux';
-import { ARTICLE_FAVORITED, ARTICLE_UNFAVORITED } from '../constants/actionTypes';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {ARTICLE_FAVORITED, ARTICLE_UNFAVORITED} from '../constants/actionTypes';
 
 const FAVORITED_CLASS = 'btn btn-sm btn-primary';
 const NOT_FAVORITED_CLASS = 'btn btn-sm btn-outline-primary';
@@ -37,7 +38,7 @@ const ArticlePreview = props => {
     <div className="article-preview">
       <div className="article-meta">
         <Link to={`/@${article.author.username}`}>
-          <img src={article.author.image} alt={article.author.username} />
+          <img src={article.author.image} alt={article.author.username}/>
         </Link>
 
         <div className="info">
@@ -51,7 +52,7 @@ const ArticlePreview = props => {
 
         <div className="pull-xs-right">
           <button className={favoriteButtonClass} onClick={handleClick}>
-            <i className="ion-heart"></i> {article.favoritesCount}
+            <i className="ion-heart"/> {article.favoritesCount}
           </button>
         </div>
       </div>
@@ -67,13 +68,17 @@ const ArticlePreview = props => {
                 <li className="tag-default tag-pill tag-outline" key={tag}>
                   {tag}
                 </li>
-              )
+              );
             })
           }
         </ul>
       </Link>
     </div>
   );
-}
-
+};
+ArticlePreview.propTypes = {
+  article: PropTypes.any,
+  unfavorite: PropTypes.any,
+  favorite: PropTypes.any
+};
 export default connect(() => ({}), mapDispatchToProps)(ArticlePreview);

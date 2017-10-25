@@ -30,7 +30,7 @@ export default (state = {}, action) => {
       };
     case ASYNC_START:
       if (action.subtype === ARTICLE_SUBMITTED) {
-        return { ...state, inProgress: true };
+        return {...state, inProgress: true};
       }
       break;
     case ADD_TAG:
@@ -45,7 +45,7 @@ export default (state = {}, action) => {
         tagList: state.tagList.filter(tag => tag !== action.tag)
       };
     case UPDATE_FIELD_EDITOR:
-      return { ...state, [action.key]: action.value };
+      return {...state, [action.key]: action.value};
     default:
       return state;
   }

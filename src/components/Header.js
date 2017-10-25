@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 const LoggedOutView = props => {
   if (!props.currentUser) {
@@ -43,21 +44,22 @@ const LoggedInView = props => {
 
         <li className="nav-item">
           <Link to="/editor" className="nav-link">
-            <i className="ion-compose"></i>&nbsp;New Post
+            <i className="ion-compose"/>&nbsp;New Post
           </Link>
         </li>
 
         <li className="nav-item">
           <Link to="/settings" className="nav-link">
-            <i className="ion-gear-a"></i>&nbsp;Settings
+            <i className="ion-gear-a"/>&nbsp;Settings
           </Link>
         </li>
 
         <li className="nav-item">
           <Link
             to={`/@${props.currentUser.username}`}
-            className="nav-link">
-            <img src={props.currentUser.image} className="user-pic" alt={props.currentUser.username} />
+            className="nav-link"
+          >
+            <img src={props.currentUser.image} className="user-pic" alt={props.currentUser.username}/>
             {props.currentUser.username}
           </Link>
         </li>
@@ -79,13 +81,22 @@ class Header extends React.Component {
             {this.props.appName.toLowerCase()}
           </Link>
 
-          <LoggedOutView currentUser={this.props.currentUser} />
+          <LoggedOutView currentUser={this.props.currentUser}/>
 
-          <LoggedInView currentUser={this.props.currentUser} />
+          <LoggedInView currentUser={this.props.currentUser}/>
         </div>
       </nav>
     );
   }
 }
-
+LoggedOutView.propTypes = {
+  currentUser: PropTypes.any
+};
+LoggedInView.propTypes = {
+  currentUser: PropTypes.any
+};
+Header.propTypes = {
+  currentUser: PropTypes.any,
+  appName: PropTypes.string
+};
 export default Header;

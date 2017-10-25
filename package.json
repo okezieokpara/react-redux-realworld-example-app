@@ -20,12 +20,30 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-logger": "^3.0.1",
     "superagent": "^2.3.0",
-    "superagent-promise": "^1.1.0"
+    "superagent-promise": "^1.1.0",
+    "eslint": "^4.8.0",
+    "eslint-config-xo-react": "^0.10.0",
+    "eslint-config-xo-space": "^0.15.0",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-babel": "^4.0.1",
+    "eslint-plugin-react": "^7.4.0"
   },
   "scripts": {
     "start": "cross-env PORT=4100 react-scripts start",
     "build": "react-scripts build",
     "test": "cross-env PORT=4100 react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "browser": true,
+      "jasmine": true
+    },
+    "extends": [
+      "xo-react/space",
+      "xo-space/esnext"
+    ],
+    "parser": "babel-eslint"
   }
 }

@@ -1,7 +1,8 @@
 import ListErrors from './ListErrors';
 import React from 'react';
 import agent from '../agent';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import {
   ADD_TAG,
   EDITOR_PAGE_LOADED,
@@ -17,17 +18,17 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onAddTag: () =>
-    dispatch({ type: ADD_TAG }),
+    dispatch({type: ADD_TAG}),
   onLoad: payload =>
-    dispatch({ type: EDITOR_PAGE_LOADED, payload }),
+    dispatch({type: EDITOR_PAGE_LOADED, payload}),
   onRemoveTag: tag =>
-    dispatch({ type: REMOVE_TAG, tag }),
+    dispatch({type: REMOVE_TAG, tag}),
   onSubmit: payload =>
-    dispatch({ type: ARTICLE_SUBMITTED, payload }),
+    dispatch({type: ARTICLE_SUBMITTED, payload}),
   onUnload: payload =>
-    dispatch({ type: EDITOR_PAGE_UNLOADED }),
+    dispatch({type: EDITOR_PAGE_UNLOADED}),
   onUpdateField: (key, value) =>
-    dispatch({ type: UPDATE_FIELD_EDITOR, key, value })
+    dispatch({type: UPDATE_FIELD_EDITOR, key, value})
 });
 
 class Editor extends React.Component {
@@ -36,12 +37,12 @@ class Editor extends React.Component {
 
     const updateFieldEvent =
       key => ev => this.props.onUpdateField(key, ev.target.value);
-    this.changeTitle = updateFieldEvent('title');
-    this.changeDescription = updateFieldEvent('description');
-    this.changeBody = updateFieldEvent('body');
-    this.changeTagInput = updateFieldEvent('tagInput');
+    this.handleChangeTitle = updateFieldEvent('title');
+    this.handleChangeDescription = updateFieldEvent('description');
+    this.handleChangeBody = updateFieldEvent('body');
+    this.handleChangeTagInput = updateFieldEvent('tagInput');
 
-    this.watchForEnter = ev => {
+    this.handleWatchForEnter = ev => {
       if (ev.keyCode === 13) {
         ev.preventDefault();
         this.props.onAddTag();
@@ -52,7 +53,7 @@ class Editor extends React.Component {
       this.props.onRemoveTag(tag);
     };
 
-    this.submitForm = ev => {
+    this.handleSubmitForm = ev => {
       ev.preventDefault();
       const article = {
         title: this.props.title,
@@ -61,7 +62,7 @@ class Editor extends React.Component {
         tagList: this.props.tagList
       };
 
-      const slug = { slug: this.props.articleSlug };
+      const slug = {slug: this.props.articleSlug};
       const promise = this.props.articleSlug ?
         agent.Articles.update(Object.assign(article, slug)) :
         agent.Articles.create(article);
@@ -98,7 +99,7 @@ class Editor extends React.Component {
           <div className="row">
             <div className="col-md-10 offset-md-1 col-xs-12">
 
-              <ListErrors errors={this.props.errors}></ListErrors>
+              <ListErrors errors={this.props.errors}/>
 
               <form>
                 <fieldset>
@@ -109,7 +110,8 @@ class Editor extends React.Component {
                       type="text"
                       placeholder="Article Title"
                       value={this.props.title}
-                      onChange={this.changeTitle} />
+                      onChange={this.handleChangeTitle}
+                    />
                   </fieldset>
 
                   <fieldset className="form-group">
@@ -118,7 +120,8 @@ class Editor extends React.Component {
                       type="text"
                       placeholder="What's this article about?"
                       value={this.props.description}
-                      onChange={this.changeDescription} />
+                      onChange={this.handleChangeDescription}
+                    />
                   </fieldset>
 
                   <fieldset className="form-group">
@@ -127,8 +130,8 @@ class Editor extends React.Component {
                       rows="8"
                       placeholder="Write your article (in markdown)"
                       value={this.props.body}
-                      onChange={this.changeBody}>
-                    </textarea>
+                      onChange={this.handleChangeBody}
+                      />
                   </fieldset>
 
                   <fieldset className="form-group">
@@ -137,17 +140,19 @@ class Editor extends React.Component {
                       type="text"
                       placeholder="Enter tags"
                       value={this.props.tagInput}
-                      onChange={this.changeTagInput}
-                      onKeyUp={this.watchForEnter} />
+                      onChange={this.handleChangeTagInput}
+                      onKeyUp={this.handleWatchForEnter}
+                    />
 
                     <div className="tag-list">
                       {
                         (this.props.tagList || []).map(tag => {
                           return (
                             <span className="tag-default tag-pill" key={tag}>
-                              <i  className="ion-close-round"
-                                  onClick={this.removeTagHandler(tag)}>
-                              </i>
+                              <i
+                                className="ion-close-round"
+                                onClick={this.removeTagHandler(tag)}
+                              />
                               {tag}
                             </span>
                           );
@@ -160,7 +165,8 @@ class Editor extends React.Component {
                     className="btn btn-lg pull-xs-right btn-primary"
                     type="button"
                     disabled={this.props.inProgress}
-                    onClick={this.submitForm}>
+                    onClick={this.handleSubmitForm}
+                  >
                     Publish Article
                   </button>
 
@@ -174,5 +180,23 @@ class Editor extends React.Component {
     );
   }
 }
+Editor.propTypes = {
+  onUpdateField: PropTypes.func,
+  onAddTag: PropTypes.func,
+  onSubmit: PropTypes.func,
+  onRemoveTag: PropTypes.func,
+  title: PropTypes.string,
+  description: PropTypes.string,
+  body: PropTypes.string,
+  tagList: PropTypes.string,
+  articleSlug: PropTypes.string,
+  slug: PropTypes.string,
+  match: PropTypes.any,
+  inProgress: PropTypes.bool,
+  tagInput: PropTypes.string,
+  errors: PropTypes.any,
+  onUnload: PropTypes.func,
+  onLoad: PropTypes.func
 
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Editor);
